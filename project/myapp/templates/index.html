@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple CRUD</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1{
+            text-align: center;
+            color: #333;
+        }
+
+        form{
+            background: #fff;
+            padding: 15px;
+            margin: 10px auto;
+            width: 60%;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        input{
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button{
+            background: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover{
+            background: #218838;
+        }
+
+        table{
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        th, td{
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th{
+            background: #007bff;
+            color: white;
+        }
+
+        img{
+            border-radius: 5px;
+        }
+    </style>
+
+</head>
+<body>
+
+    <h1>Simple CRUD</h1>
+
+    <!-- Search Form -->
+    <form method="GET">
+        <input type="search" name="search" placeholder="Search name or email">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Add User Form -->
+    <form action="{%url 'adduser'%}" method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+        <input type="hidden" name="id" value="{{person.id}}">
+        <input type="text" name="name" value="{{person.name}}" placeholder="Name">
+        <input type="number" name="age" value="{{person.age}}" placeholder="Age">
+        <input type="email" name="email"  value="{{person.email}}"placeholder="Email">
+        <input type="file" name="image">
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Table -->
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Email</th>
+            <th>Image</th>
+        </tr>
+
+        {% for i in persons %}
+        <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.name}}</td>
+            <td>{{i.age}}</td>
+            <td>{{i.email}}</td>
+            <td>
+                <img src="{{i.image.url}}" width="80">
+            </td>
+            <td>
+                <a href ="{%url 'delete'%}?did={{i.id}}">Delete</a>
+                <a href ="{%url 'update'%}?uid={{i.id}}">Update</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>
